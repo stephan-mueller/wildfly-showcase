@@ -1,4 +1,4 @@
-FROM jboss/wildfly:19.0.0.Final
+FROM jboss/wildfly:19.1.0.Final
 
 RUN $JBOSS_HOME/bin/add-user.sh admin Admin#70365 --silent
 
