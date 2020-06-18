@@ -29,7 +29,7 @@ public abstract class AbstractIntegrationTest {
   protected static final GenericContainer CONTAINER = new GenericContainer("wildfly-showcase:0")
       .withExposedPorts(8080, 9990)
       .withNetwork(NETWORK)
-      .waitingFor(Wait.forLogMessage(".*started in.*", 1));
+      .waitingFor(Wait.forHealthcheck());
 
   static {
     CONTAINER.start();
