@@ -40,12 +40,20 @@ public class GreetResourceIT extends AbstractIntegrationTest {
 
   @BeforeAll
   public static void setUpUri() {
-    CONTAINER.withLogConsumer(new Slf4jLogConsumer(LOG));
+    APPLICATION.withLogConsumer(new Slf4jLogConsumer(LOG));
 
     requestSpecification = new RequestSpecBuilder()
-        .setPort(CONTAINER.getFirstMappedPort())
+        .setPort(APPLICATION.getFirstMappedPort())
         .setBasePath("wildfly-showcase")
         .build();
+
+    RestAssured.given(requestSpecification)
+        .contentType(MediaType.APPLICATION_JSON)
+        .body("{ \"greeting\" : \"Hello\" }")
+        .when()
+        .put("/api/greet/greeting")
+        .then()
+        .statusCode(Response.Status.NO_CONTENT.getStatusCode());
   }
 
   @Test

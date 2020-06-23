@@ -37,10 +37,10 @@ public class GreetResourceHealthCheckIT extends AbstractIntegrationTest {
 
   @Test
   public void checkHealth() {
-    CONTAINER.withLogConsumer(new Slf4jLogConsumer(LOG));
+    APPLICATION.withLogConsumer(new Slf4jLogConsumer(LOG));
 
     RequestSpecification requestSpecification = new RequestSpecBuilder()
-        .setPort(CONTAINER.getMappedPort(9990))
+        .setPort(APPLICATION.getMappedPort(9990))
         .build();
 
     RestAssured.given(requestSpecification)
