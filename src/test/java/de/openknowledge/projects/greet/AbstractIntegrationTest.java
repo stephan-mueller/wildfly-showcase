@@ -28,7 +28,7 @@ public abstract class AbstractIntegrationTest {
 
   protected static final Network NETWORK = Network.newNetwork();
 
-  protected static final GenericContainer APPLICATION = new GenericContainer("wildfly-showcase:0")
+  protected static final GenericContainer<?> APPLICATION = new GenericContainer<>("wildfly-showcase")
       .withExposedPorts(8080, 9990)
       .withNetwork(NETWORK)
       .withNetworkAliases(NETWORK_ALIAS_APPLICATION)

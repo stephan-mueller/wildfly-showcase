@@ -11,7 +11,7 @@ jar and Docker image and can be run via `docker`:
 
 ```shell script
 $ mvn clean package
-$ docker run --rm -p 8080:8080 -p 9990:9990 wildfly-showcase:0
+$ docker run --rm -p 8080:8080 -p 9990:9990 wildfly-showcase
 ```
 
 Wait for a message log similar to this:

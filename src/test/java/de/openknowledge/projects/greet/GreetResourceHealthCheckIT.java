@@ -16,6 +16,7 @@
 package de.openknowledge.projects.greet;
 
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,7 @@ import io.restassured.specification.RequestSpecification;
 /**
  * Integration test for the health check {@link GreetResourceHealthCheck}.
  */
+@Disabled
 public class GreetResourceHealthCheckIT extends AbstractIntegrationTest {
 
   private static final Logger LOG = LoggerFactory.getLogger(GreetResourceHealthCheckIT.class);
