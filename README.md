@@ -1,5 +1,7 @@
 # Wildfly Showcase
 
+[![GitHub last commit](https://img.shields.io/github/last-commit/stephan-mueller/wildfly-showcase)](https://github.com/stephan-mueller/wildfly-showcase/commits) 
+[![GitHub](https://img.shields.io/github/license/stephan-mueller/wildfly-showcase)](https://github.com/stephan-mueller/wildfly-showcase/blob/master/LICENSE)
 [![CircleCI](https://circleci.com/gh/stephan-mueller/wildfly-showcase.svg?style=shield)](https://app.circleci.com/pipelines/github/stephan-mueller/wildlfy-showcase)
 
 This is a showcase for the [Wildfly](https://wildfly.org) application server. It contains a hello world application, which demonstrates several features of Wildfly and Eclipse Microprofile
