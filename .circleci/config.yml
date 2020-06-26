@@ -1,0 +1,33 @@
+version: 2.1
+
+jobs:
+  build:
+    machine: true
+    working_directory: ~/wildfly-showcase
+    steps:
+      - checkout
+
+      - restore_cache:
+          key: wildfly-showcase-{{ checksum "pom.xml" }}
+
+      - run:
+          name: fetch dependencies
+          command: mvn dependency:go-offline
+
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: wildfly-showcase-{{ checksum "pom.xml" }}
+
+      - run:
+          name: build and tests
+          command: mvn -B clean verify -Ddockerfile.username=$DOCKER_USER -Ddockerfile.password=$DOCKER_PASS
+
+      - store_test_results:
+          path: target/surefire-reports
+
+workflows:
+  main:
+    jobs:
+      - build:
+          context: docker

@@ -1,5 +1,7 @@
 # Wildfly Showcase
 
+[![CircleCI](https://circleci.com/gh/stephan-mueller/wildfly-showcase.svg?style=shield)](https://app.circleci.com/pipelines/github/stephan-mueller/wildlfy-showcase)
+
 This is a showcase for the [Wildfly](https://wildfly.org) application server. It contains a hello world application, which demonstrates several features of Wildfly and Eclipse Microprofile
 
 Software requirements to run the samples are `maven`, `openjdk-1.8` (or any other 1.8 JDK) and `docker`. When running the Maven lifecycle it will create the war package. The war will be copied into a Docker image using Spotify's `dockerfile-maven-plugin` during the package phase. 
