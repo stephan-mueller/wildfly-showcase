@@ -33,12 +33,12 @@ import io.restassured.specification.RequestSpecification;
  * Integration test for the health check {@link GreetResourceHealthCheck}.
  */
 @Disabled
-public class GreetResourceHealthCheckIT extends AbstractIntegrationTest {
+class GreetResourceHealthCheckIT extends AbstractIntegrationTest {
 
   private static final Logger LOG = LoggerFactory.getLogger(GreetResourceHealthCheckIT.class);
 
   @Test
-  public void checkHealth() {
+  void checkHealth() {
     APPLICATION.withLogConsumer(new Slf4jLogConsumer(LOG));
 
     RequestSpecification requestSpecification = new RequestSpecBuilder()

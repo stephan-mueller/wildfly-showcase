@@ -32,14 +32,14 @@ import io.restassured.specification.RequestSpecification;
 /**
  * Integration test for the resource {@link GreetResource}.
  */
-public class GreetResourceIT extends AbstractIntegrationTest {
+class GreetResourceIT extends AbstractIntegrationTest {
 
   private static final Logger LOG = LoggerFactory.getLogger(GreetResourceIT.class);
 
   private static RequestSpecification requestSpecification;
 
   @BeforeAll
-  public static void setUpUri() {
+  static void setUpUri() {
     APPLICATION.withLogConsumer(new Slf4jLogConsumer(LOG));
 
     requestSpecification = new RequestSpecBuilder()
@@ -57,7 +57,7 @@ public class GreetResourceIT extends AbstractIntegrationTest {
   }
 
   @Test
-  public void greet() {
+  void greet() {
     RestAssured.given(requestSpecification)
         .accept(MediaType.APPLICATION_JSON)
         .pathParam("name", "Stephan")
@@ -70,7 +70,7 @@ public class GreetResourceIT extends AbstractIntegrationTest {
   }
 
   @Test
-  public void greetTheWorld() {
+  void greetTheWorld() {
     RestAssured.given(requestSpecification)
         .accept(MediaType.APPLICATION_JSON)
         .when()
@@ -82,7 +82,7 @@ public class GreetResourceIT extends AbstractIntegrationTest {
   }
 
   @Test
-  public void getGreeting() {
+  void getGreeting() {
     RestAssured.given(requestSpecification)
         .accept(MediaType.APPLICATION_JSON)
         .when()
@@ -94,7 +94,7 @@ public class GreetResourceIT extends AbstractIntegrationTest {
   }
 
   @Test
-  public void updateGreeting() {
+  void updateGreeting() {
     RestAssured.given(requestSpecification)
         .contentType(MediaType.APPLICATION_JSON)
         .body("{ \"greeting\" : \"Hello\" }")
