@@ -2,7 +2,7 @@ FROM jboss/wildfly:19.1.0.Final
 
 RUN $JBOSS_HOME/bin/add-user.sh admin Admin#70365 --silent
 
-ARG WAR_FILE=wildfly-showcase.war
+ARG WAR_FILE
 
 COPY target/$WAR_FILE $JBOSS_HOME/standalone/deployments/$WAR_FILE
 
