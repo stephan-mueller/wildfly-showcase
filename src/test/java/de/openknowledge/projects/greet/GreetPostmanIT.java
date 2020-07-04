@@ -42,7 +42,7 @@ class GreetPostmanIT extends AbstractIntegrationTest {
       .withCopyFileToContainer(MountableFile.forClasspathResource("postman/hello-world.postman_environment.json"),
                                "/etc/newman/hello-world.postman_environment.json")
       .withFileSystemBind("target/postman/reports", "/etc/newman/reports", BindMode.READ_WRITE)
-      .withStartupCheckStrategy(new OneShotStartupCheckStrategy().withTimeout(Duration.ofSeconds(5)));
+      .withStartupCheckStrategy(new OneShotStartupCheckStrategy().withTimeout(Duration.ofSeconds(8)));
 
   @Test
   void run() {
