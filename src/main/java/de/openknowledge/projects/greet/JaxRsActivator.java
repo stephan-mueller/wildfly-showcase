@@ -16,7 +16,6 @@
 package de.openknowledge.projects.greet;
 
 import org.eclipse.microprofile.openapi.annotations.OpenAPIDefinition;
-import org.eclipse.microprofile.openapi.annotations.info.Contact;
 import org.eclipse.microprofile.openapi.annotations.info.Info;
 import org.eclipse.microprofile.openapi.annotations.info.License;
 import org.eclipse.microprofile.openapi.annotations.servers.Server;
@@ -31,7 +30,6 @@ import javax.ws.rs.core.Application;
 @ApplicationPath("api")
 @OpenAPIDefinition(info =
 @Info(title = "Greeting API", description = "Provides access to the API operations", version = "1.0.0",
-    contact = @Contact(email = "kontakt@openknowledge.de"),
     license = @License(name = "Apache 2.0", url = "http://www.apache.org/licenses/LICENSE-2.0.html")),
     servers = @Server(url = "http://{host}:{port}/{context-root}", variables = {
         @ServerVariable(name = "host", defaultValue = "localhost"),
