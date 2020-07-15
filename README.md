@@ -6,9 +6,19 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=stephan-mueller_wildfly-showcase&metric=alert_status)](https://sonarcloud.io/dashboard?id=stephan-mueller_wildfly-showcase)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=stephan-mueller_wildfly-showcase&metric=coverage)](https://sonarcloud.io/dashboard?id=stephan-mueller_wildfly-showcase)
 
-This is a showcase for the [Wildfly](https://wildfly.org) application server. It contains a hello world application, which demonstrates several features of Wildfly and Eclipse Microprofile
+This is a showcase for the [Wildfly](https://wildfly.org) application server. It contains a hello world application, 
+which demonstrates several features of Wildfly and Eclipse Microprofile
 
-Software requirements to run the samples are `maven`, `openjdk-1.8` (or any other 1.8 JDK) and `docker`. When running the Maven lifecycle it will create the war package. The war will be copied into a Docker image using Spotify's `dockerfile-maven-plugin` during the package phase. 
+Software requirements to run the samples are `maven`, `openjdk-1.8` (or any other 1.8 JDK) and `docker`. 
+When running the Maven lifecycle it will create the war package. The war will be copied into a Docker image using Spotify's 
+`dockerfile-maven-plugin` during the package phase. 
+
+**Notable Features:**
+* Integration of MP Health, MP Metrics and MP OpenAPI
+* Testcontainer-Tests with Rest-Assured, Cucumber and Postman/newman
+* Code-Coverage for Testcontainer-Tests
+* [CircleCI](https://circleci.com) Integration
+* [Sonarcloud](https://sonarcloud.io) Integration
 
 ## How to run
 
