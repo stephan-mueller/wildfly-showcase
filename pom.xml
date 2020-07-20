@@ -76,13 +76,38 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.wildfly.plugins</groupId>
+                <artifactId>wildfly-jar-maven-plugin</artifactId>
+                <version>2.0.0.Alpha5</version>
+                <configuration>
+                    <feature-pack-location>wildfly@maven(org.jboss.universe:community-universe)#20.0.1.Final</feature-pack-location>
+                    <layers>
+                        <!-- https://docs.wildfly.org/20/Admin_Guide.html#defined-galleon-layers -->
+                        <layer>jaxrs-server</layer>
+                        <layer>management</layer>
+                        <layer>observability</layer>
+                        <layer>microprofile-openapi</layer>
+                    </layers>
+                    <excluded-layers>
+                        <layer>deployment-scanner</layer>
+                    </excluded-layers>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>package</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>dockerfile-maven-plugin</artifactId>
                 <version>1.4.13</version>
                 <configuration>
                     <repository>${project.build.finalName}</repository>
                     <buildArgs>
-                        <WAR_FILE>${project.build.finalName}.war</WAR_FILE>
+                        <JAR_FILE>${project.build.finalName}-wildfly.jar</JAR_FILE>
                     </buildArgs>
                     <skipDockerInfo>true</skipDockerInfo>
                 </configuration>
@@ -347,4 +372,34 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>jboss-public-repository-group</id>
+            <name>JBoss Public Repository Group</name>
+            <url>https://repository.jboss.org/nexus/content/groups/public/</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>jboss-public-repository-group</id>
+            <name>JBoss Public Repository Group</name>
+            <url>https://repository.jboss.org/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 </project>

@@ -44,7 +44,6 @@ class GreetResourceIT extends AbstractIntegrationTest {
 
     requestSpecification = new RequestSpecBuilder()
         .setPort(APPLICATION.getFirstMappedPort())
-        .setBasePath("wildfly-showcase")
         .build();
 
     RestAssured.given(requestSpecification)

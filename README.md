@@ -10,11 +10,12 @@ This is a showcase for the [Wildfly](https://wildfly.org) application server. It
 which demonstrates several features of Wildfly and Eclipse Microprofile.
 
 Software requirements to run the samples are `maven`, `openjdk-1.8` (or any other 1.8 JDK) and `docker`. 
-When running the Maven lifecycle it will create the war package and use the `wildfly-jar-maven-plugin` to create a runnable jar (fat jar) 
+When running the Maven lifecycle it will create the war package and use the `wildfly-jar-maven-plugin` to create a bootable jar (fat JAR) 
 which contains the application and the Wildfly application server. 
-The fat jar will be copied into a Docker image using Spotify's dockerfile-maven-plugin during the package phase.
+The fat JAR will be copied into a Docker image using Spotify's dockerfile-maven-plugin during the package phase.
 
 **Notable Features:**
+* Dockerfiles for bootable JAR & Server
 * Integration of MP Health, MP Metrics and MP OpenAPI
 * Testcontainer-Tests with Rest-Assured, Cucumber and Postman/newman
 * [CircleCI](https://circleci.com) Integration
@@ -23,12 +24,18 @@ The fat jar will be copied into a Docker image using Spotify's dockerfile-maven-
 
 ## How to run
 
-Before running the application it needs to be compiled and packaged using `Maven. It creates the runnable jar and Docker image and can be 
+Before running the application it needs to be compiled and packaged using `Maven. It creates the bootable JAR and Docker image and can be 
 run via `docker`:
 
 ```shell script
 $ mvn clean package
 $ docker run --rm -p 8080:8080 -p 9990:9990 wildfly-showcase
+```
+
+For the _normal_ Wildfly Server a multi-stage Docker image is provided and can be created and run via `docker`:    
+```shell script
+$ docker build -f Dockerfile.server -t wildfly-server-showcase .
+$ docker run --rm -p 8080:8080 -p 9990:9990 wildfly-server-showcase
 ```
 
 Wait for a message log similar to this:
@@ -61,7 +68,7 @@ $ docker rm <ids of the containers>
 The application is a very simple "Hello World" greeting service. It supports GET requests for generating a greeting message, and a PUT 
 request for changing the greeting itself. The response is encoded using JSON.
 
-Try the application
+**Try the application**
 ```shell script
 curl -X GET http://localhost:8080/greet
 {"message":"Hello World!"}
@@ -82,7 +89,7 @@ curl -X GET http://localhost:8080/greet/Max
 
 The application server provides built-in support for health, metrics and openapi endpoints.
 
-Health liveness and readiness
+**Health liveness and readiness**
 ```shell script
 curl -s -X GET http://localhost:9990/health
 
@@ -91,16 +98,65 @@ curl -s -X GET http://localhost:9990/health/live
 curl -s -X GET http://localhost:9990/health/ready
 ```
 
-Metrics in Prometheus / JSON Format
+**Metrics in Prometheus / JSON Format**
 ```shell script
 curl -s -X GET http://localhost:9990/metrics
 
 curl -H 'Accept: application/json' -X GET http://localhost:9990/metrics
 ```
 
-OpenAPI in YAML / JSON Format
+**OpenAPI in YAML / JSON Format**
 ```shell script
 curl -s -X GET http://localhost:8080/openapi
 
 curl -H 'Accept: application/json' -X GET http://localhost:8080/openapi
+```
+
+### Bootable JAR (wildfly-jar-maven-plugin)
+
+The [Wildfly jar maven plugin](https://github.com/wildfly-extras/wildfly-jar-maven-plugin/releases/download/2.0.0.Alpha5/index.html) is 
+aimed to build a bootable JAR for WildFly (starting version 20.0.0.Final). A WildFly bootable JAR contains both the server and your 
+packaged application (a JAR, a EAR or a WAR). Once the application has been built and packaged as a bootable JAR, you can start the 
+application using the following command:
+
+```shell script
+$ java -jar target/wildfly-showcase-wildfly.jar
+```
+
+When building a bootable JAR you have to select the set of WildFly server 
+[Galleon layers](https://docs.wildfly.org/20/Admin_Guide.html#defined-galleon-layers) which has to be present in the bootable JAR. 
+Selecting a subset of server features has an impact on the server xml configuration and the set of installed JBoss modules. 
+By selecting the subset required by your application you will reduce the jar size, server configuration content and memory footprint.
+
+**Please note:** Wildfly provides numerous basic, aggregration and decorator layers. Depending on the APIs you are using, you have to 
+select a set of layers. E.g. if you expose the API documentation of your application by using Microprofile OpenAPI, you have to add the 
+`microprofile-openapi` layer. If you miss adding a required layer for a specific API the corresponding implementation will not be added to 
+the bootable JAR and the expected functionality will not be available during runtime.
+
+**Maven POM file**
+```xml
+<plugin>
+    <groupId>org.wildfly.plugins</groupId>
+    <artifactId>wildfly-jar-maven-plugin</artifactId>
+    <version>2.0.0.Alpha5</version>
+    <configuration>
+        <feature-pack-location>wildfly@maven(org.jboss.universe:community-universe)#20.0.1.Final</feature-pack-location>
+        <layers>
+            <layer>jaxrs-server</layer>         <!-- provides JAX-RS, CDI, Bean-Validation and JPA layers        -->
+            <layer>management</layer>           <!-- provides support for remote access to management interfaces -->
+            <layer>observability</layer>        <!-- provides MP Config, MP Health and MP Metrics layer          -->
+            <layer>microprofile-openapi</layer> <!-- provides MP OpenAPI layer                                   -->
+        </layers>
+        <excluded-layers>
+            <layer>deployment-scanner</layer>   <!-- excludes support for deployment directory scanning          -->
+        </excluded-layers>
+    </configuration>
+    <executions>
+        <execution>
+            <goals>
+                <goal>package</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
 ```

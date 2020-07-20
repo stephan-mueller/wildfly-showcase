@@ -50,7 +50,6 @@ public class GreetResourceCucumberSteps {
 
     requestSpecification = new RequestSpecBuilder()
         .setPort(container.getFirstMappedPort())
-        .setBasePath("wildfly-showcase")
         .build();
   }
 

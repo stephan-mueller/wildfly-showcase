@@ -1,15 +1,13 @@
-FROM jboss/wildfly:20.0.1.Final
+FROM openjdk:8-jre-alpine
 
-RUN $JBOSS_HOME/bin/add-user.sh admin Admin#70365 --silent
+RUN apk --no-cache add curl
 
-ARG WAR_FILE
-
-COPY target/$WAR_FILE $JBOSS_HOME/standalone/deployments/$WAR_FILE
+ARG JAR_FILE=wildfly-showcase-wildfly.jar
+COPY target/${JAR_FILE} /opt/application.jar
 
 HEALTHCHECK --start-period=10s --timeout=60s --retries=10 --interval=5s CMD curl -f http://localhost:9990/health/ready || exit 1
 
-ENV JAVA_OPTS="-Djboss.server.default.config=standalone-microprofile.xml -Djboss.http.port=8080 -Djboss.management.http.port=9990"
+ENV JAVA_OPTS="-Djboss.bind.address=0.0.0.0 -Djboss.bind.address.management=0.0.0.0 -Djboss.http.port=8080 -Djboss.management.http.port=9990"
 
-EXPOSE 9990
-
-CMD ["/opt/jboss/wildfly/bin/standalone.sh", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0"]
+EXPOSE 8080 9990
+ENTRYPOINT exec java -jar $JAVA_OPTS /opt/application.jar

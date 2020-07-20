@@ -1,0 +1,25 @@
+# 1st stage, build the war
+FROM maven:3.6.3-jdk-11 as build
+WORKDIR /build
+
+COPY ./pom.xml pom.xml
+RUN mvn dependency:go-offline --file pom.xml -B
+
+COPY . .
+RUN mvn --batch-mode -DskipTests=true -Dwildfly.bootable.package.skip=true -Ddockerfile.skip --file pom.xml clean package
+
+
+# 2nd stage, build the runtime image
+FROM jboss/wildfly:20.0.1.Final
+
+RUN $JBOSS_HOME/bin/add-user.sh admin Admin#70365 --silent
+
+COPY --from=build /build/target/wildfly-showcase.war $JBOSS_HOME/standalone/deployments/
+
+HEALTHCHECK --start-period=10s --timeout=60s --retries=10 --interval=5s CMD curl -f http://localhost:9990/health/ready || exit 1
+
+ENV JAVA_OPTS="-Djboss.server.default.config=standalone-microprofile.xml -Djboss.http.port=8080 -Djboss.management.http.port=9990" -Dapp.context.root=wildfly-showcase
+
+EXPOSE 9990
+
+CMD ["/opt/jboss/wildfly/bin/standalone.sh", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0"]
