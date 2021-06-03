@@ -24,7 +24,7 @@
         <version.microprofile>3.3</version.microprofile>
         <version.microprofile-ext>1.1.0</version.microprofile-ext>
 
-        <version.resteasy>3.11.2.Final</version.resteasy>
+        <version.resteasy>4.5.7.Final</version.resteasy>
 
         <version.apache_commons-lang>3.11</version.apache_commons-lang>
 
